@@ -1,6 +1,7 @@
 'use client';
 
 import { User } from "@/types/user.types";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 //todo: Fetch Users data form JSON Placeholder -
@@ -139,12 +140,13 @@ export default function Home() {
                                 </div>
 
                                 {/* Button */}
-                                <button
+                                <Link
+                                    href={`/users/${user.id}`}
                                     type="button"
                                     className="mt-6 w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm font-medium text-slate-200 transition-all duration-300 hover:border-cyan-400/40 hover:bg-cyan-400 hover:text-slate-950"
                                 >
                                     View User Details
-                                </button>
+                                </Link>
 
                             </article>
                         ))}
