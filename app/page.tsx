@@ -49,21 +49,6 @@ export default function Home() {
                         clean, and responsive interface.
                     </p>
 
-                    {/* CTA */}
-                    <a
-                        href="#users"
-                        className="mt-8 inline-flex items-center rounded-xl
-                       bg-cyan-400 px-6 py-3
-                       text-sm font-semibold text-slate-950
-                       transition hover:bg-cyan-300
-                       focus:outline-none focus:ring-2
-                       focus:ring-cyan-400 focus:ring-offset-2
-                       focus:ring-offset-slate-950"
-                    >
-                        Browse Users
-                        <span className="ml-2">↓</span>
-                    </a>
-
                 </div>
             </section>
 
