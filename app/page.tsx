@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 export default function Home() {
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
 
     async function getUsers() {
         setLoading(true);
@@ -24,6 +25,7 @@ export default function Home() {
             setUsers(data)
         } catch (error) {
             console.error('Error', error);
+            setError('Unable to fetch User Directory. Please check your Internet connection.');
         } finally {
             setLoading(false);
         }
@@ -63,6 +65,8 @@ export default function Home() {
                 <div className="mx-auto max-w-6xl">
 
                     {loading ? (
+
+                        //Loading -
                         <div className="flex min-h-64 flex-col items-center justify-center rounded-2xl border border-slate-800 bg-slate-900/60">
 
                             {/* Spinner */}
@@ -75,6 +79,25 @@ export default function Home() {
 
                             <p className="mt-1 text-xs text-slate-500">
                                 Please wait while we fetch the users.
+                            </p>
+
+                        </div>
+                    ) : error ? (
+
+                        // Error -
+                        <div className="flex min-h-64 flex-col items-center justify-center rounded-2xl border border-red-500/20 bg-slate-900/60 px-6 text-center">
+
+                            <div className="flex h-12 w-12 items-center justify-center rounded-full border border-red-500/20 bg-red-500/10 text-lg font-semibold text-red-400">
+                                !
+                            </div>
+
+                            <h3 className="mt-4 text-lg font-semibold text-white">
+                                Unable to Fetch User Directory
+                            </h3>
+
+                            <p className="mt-2 max-w-md text-sm leading-6 text-slate-400">
+                                We couldn't load the users right now. Please check your
+                                connection and try again.
                             </p>
 
                         </div>
