@@ -10,8 +10,11 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
     const [users, setUsers] = useState<User[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
 
     async function getUsers() {
+        setLoading(true);
+
         try {
             const response = await fetch('https://jsonplaceholder.typicode.com/users');
 
@@ -21,6 +24,8 @@ export default function Home() {
             setUsers(data)
         } catch (error) {
             console.error('Error', error);
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -30,7 +35,7 @@ export default function Home() {
 
     return (
         <main className="min-h-screen bg-slate-950 text-white">
-            <section className="px-5 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-28">
+            <section className="px-5 py-16 sm:px-8 sm:py-20 lg:px-10 lg:py-13">
                 <div className="mx-auto max-w-4xl text-center">
 
                     {/* Small Badge */}
@@ -57,101 +62,107 @@ export default function Home() {
             <section id="users" className="px-5 pb-16 sm:px-8 lg:px-12">
                 <div className="mx-auto max-w-6xl">
 
-                    {/* Section Header */}
-                    <div className="mb-8">
-                        <h2 className="text-2xl font-bold text-white sm:text-3xl">
-                            Users
-                        </h2>
+                    {loading ? (
+                        <div className="flex min-h-64 flex-col items-center justify-center rounded-2xl border border-slate-800 bg-slate-900/60">
 
-                        <p className="mt-2 text-sm text-slate-400 sm:text-base">
-                            Browse all available users.
-                        </p>
-                    </div>
+                            {/* Spinner */}
+                            <div className="h-9 w-9 animate-spin rounded-full border-2 border-slate-700 border-t-cyan-400" />
 
-                    {/* Cards Grid */}
-                    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                            {/* Loading Text */}
+                            <p className="mt-4 text-sm font-medium text-slate-300">
+                                Loading Users
+                            </p>
 
-                        {users.map((user) => (
-                            <article
-                                key={user.id}
-                                className="group relative overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-lg shadow-black/10 transition-all duration-300 hover:-translate-y-1 hover:border-cyan-400/40 hover:shadow-xl hover:shadow-cyan-500/5"
-                            >
+                            <p className="mt-1 text-xs text-slate-500">
+                                Please wait while we fetch the users.
+                            </p>
 
-                                {/* User Header */}
-                                <div className="flex items-center justify-between gap-4">
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
 
-                                    <div className="flex min-w-0 items-center gap-4">
+                            {users.map((user) => (
+                                <article
+                                    key={user.id}
+                                    className="group relative overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-lg shadow-black/10 transition-all duration-300 hover:-translate-y-1 hover:border-cyan-400/40 hover:shadow-xl hover:shadow-cyan-500/5"
+                                >
 
-                                        {/* Avatar */}
-                                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-cyan-400/10 text-lg font-bold text-cyan-400 ring-1 ring-cyan-400/20">
-                                            {user.name.charAt(0)}
+                                    {/* User Header */}
+                                    <div className="flex items-center justify-between gap-4">
+
+                                        <div className="flex min-w-0 items-center gap-4">
+
+                                            {/* Avatar */}
+                                            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-cyan-400/10 text-lg font-bold text-cyan-400 ring-1 ring-cyan-400/20">
+                                                {user.name.charAt(0)}
+                                            </div>
+
+                                            {/* Name */}
+                                            <div className="min-w-0">
+
+                                                <h3 className="truncate text-lg font-semibold text-white">
+                                                    {user.name}
+                                                </h3>
+
+                                                <p className="mt-0.5 truncate text-sm text-cyan-400">
+                                                    @{user.username}
+                                                </p>
+
+                                            </div>
+
                                         </div>
 
-                                        {/* Name */}
-                                        <div className="min-w-0">
+                                        {/* ID */}
+                                        <span className="shrink-0 text-xs font-medium text-slate-600">
+                                            #{user.id}
+                                        </span>
 
-                                            <h3 className="truncate text-lg font-semibold text-white">
-                                                {user.name}
-                                            </h3>
+                                    </div>
 
-                                            <p className="mt-0.5 truncate text-sm text-cyan-400">
-                                                @{user.username}
+                                    {/* Divider */}
+                                    <div className="my-6 h-px bg-slate-800" />
+
+                                    {/* Contact Information */}
+                                    <div className="space-y-4">
+
+                                        {/* Email */}
+                                        <div>
+                                            <p className="text-xs font-medium uppercase tracking-wider text-slate-500">
+                                                Email
                                             </p>
 
+                                            <p className="mt-1 truncate text-sm text-slate-300">
+                                                {user.email}
+                                            </p>
+                                        </div>
+
+                                        {/* Phone */}
+                                        <div>
+                                            <p className="text-xs font-medium uppercase tracking-wider text-slate-500">
+                                                Phone
+                                            </p>
+
+                                            <p className="mt-1 text-sm text-slate-300">
+                                                {user.phone}
+                                            </p>
                                         </div>
 
                                     </div>
 
-                                    {/* ID */}
-                                    <span className="shrink-0 text-xs font-medium text-slate-600">
-                                        #{user.id}
-                                    </span>
+                                    {/* Button */}
+                                    <Link
+                                        href={`/users/${user.id}`}
+                                        type="button"
+                                        className="mt-6 w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm font-medium text-slate-200 transition-all duration-300 hover:border-cyan-400/40 hover:bg-cyan-400 hover:text-slate-950"
+                                    >
+                                        View User Details
+                                    </Link>
 
-                                </div>
+                                </article>
+                            ))}
 
-                                {/* Divider */}
-                                <div className="my-6 h-px bg-slate-800" />
-
-                                {/* Contact Information */}
-                                <div className="space-y-4">
-
-                                    {/* Email */}
-                                    <div>
-                                        <p className="text-xs font-medium uppercase tracking-wider text-slate-500">
-                                            Email
-                                        </p>
-
-                                        <p className="mt-1 truncate text-sm text-slate-300">
-                                            {user.email}
-                                        </p>
-                                    </div>
-
-                                    {/* Phone */}
-                                    <div>
-                                        <p className="text-xs font-medium uppercase tracking-wider text-slate-500">
-                                            Phone
-                                        </p>
-
-                                        <p className="mt-1 text-sm text-slate-300">
-                                            {user.phone}
-                                        </p>
-                                    </div>
-
-                                </div>
-
-                                {/* Button */}
-                                <Link
-                                    href={`/users/${user.id}`}
-                                    type="button"
-                                    className="mt-6 w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm font-medium text-slate-200 transition-all duration-300 hover:border-cyan-400/40 hover:bg-cyan-400 hover:text-slate-950"
-                                >
-                                    View User Details
-                                </Link>
-
-                            </article>
-                        ))}
-
-                    </div>
+                        </div>
+                    )}
 
                 </div>
             </section>
