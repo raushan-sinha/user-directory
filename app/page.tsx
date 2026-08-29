@@ -42,7 +42,7 @@ export default function Home() {
 
                     {/* Small Badge */}
                     <div className="mb-6 inline-flex items-center rounded-full border border-slate-800 bg-slate-900 px-4 py-2 text-xs font-medium text-slate-400 sm:text-sm">
-                        Simple • Fast • Responsive
+                        Simple - Fast - Responsive
                     </div>
 
                     {/* Heading */}
